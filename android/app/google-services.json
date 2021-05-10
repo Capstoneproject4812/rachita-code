@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "122691872473",
+    "project_id": "ipvp-a77fc",
+    "storage_bucket": "ipvp-a77fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122691872473:android:a8bf8cd3e0899275dcc0c8",
+        "android_client_info": {
+          "package_name": "com.example.ipvp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "122691872473-rsc02pva2j9ld0erl23dj7bmqbij4gq1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIAANv0fquQcWyh_RPrysI_jH_Eo-c0Vw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "122691872473-rsc02pva2j9ld0erl23dj7bmqbij4gq1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
