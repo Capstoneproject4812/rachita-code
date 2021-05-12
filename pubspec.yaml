@@ -28,15 +28,31 @@ dependencies:
   cupertino_icons: ^1.0.0
   google_fonts: ^1.1.1
   font_awesome_flutter: ^8.11.0
-  #file_picker:
-  #file_picker:
+  file_picker:
   firebase_auth: 
   cloud_firestore: 
   provider: 
-  #http: 
-  #firebase_storage: 
+  http: 
+  firebase_storage: 
   firebase_core: 
   firebase_database:
+  flutter_bloc: 
+  rxdart: 
+  flutter_icons: 
+  extended_image: 
+  shape_of_view: 
+  padder: 
+  pad: 
+  color: 
+  flutter_color_models: 
+  flutter_slidable: 
+  sqflite: 
+  rate_my_app: 
+  connectivity: 
+  wiredash: 
+  html:
+  flutter_svg:
+  expansion_card: 
 
 dev_dependencies:
   flutter_test:

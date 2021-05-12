@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ipvp/bloc/navigation_bloc/navigation_bloc.dart';
 import 'package:ipvp/widgets/background.dart';
 import 'package:ipvp/services/auth.dart';
 
-class Cvform extends StatefulWidget {
+class Cvform extends StatefulWidget with NavigationStates {
   @override
   _CvformState createState() => _CvformState();
 }

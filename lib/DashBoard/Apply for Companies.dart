@@ -1,35 +1,35 @@
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ipvp/SideBarWork/AB.dart';
-import 'package:ipvp/bloc/navigation_bloc/navigation_bloc.dart';
 
-class AppliedC extends StatefulWidget with NavigationStates {
+class ApplyC extends StatefulWidget {
   @override
-  _AppliedCState createState() => _AppliedCState();
+  _ApplyCState createState() => _ApplyCState();
 }
 
-class _AppliedCState extends State<AppliedC> {
-  List data;
+class _ApplyCState extends State<ApplyC> {
+  Query _ref;
+  String status = '';
+  String name = '';
+  String type = '';
+  String details = '';
 
-  fetchData() async {
-    CollectionReference collectionReference =
-        Firestore.instance.collection('cv-info');
-    QuerySnapshot query = await collectionReference
-        .where("status", isEqualTo: "applied")
-        .getDocuments();
-
-    setState(() => data = query.documents);
-  }
+  DatabaseReference reference =
+      FirebaseDatabase.instance.reference().child('Companies');
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    fetchData();
+    _ref = FirebaseDatabase.instance
+        .reference()
+        .child('Companies')
+        .orderByChild('name');
   }
 
-  Widget _buildCompItem({Map application}) {
+  Widget _buildCompItem({Map company}) {
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 5, horizontal: 2),
@@ -53,7 +53,7 @@ class _AppliedCState extends State<AppliedC> {
                     width: 10,
                   ),
                   Text(
-                    application['name'],
+                    company['name'],
                     style: TextStyle(
                       fontFamily: 'Nunito Regular',
                       fontSize: 27,
@@ -75,7 +75,7 @@ class _AppliedCState extends State<AppliedC> {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    application['type'],
+                    company['type'],
                     style: TextStyle(
                       fontFamily: 'Nunito Regular',
                       fontSize: 20,
@@ -99,7 +99,7 @@ class _AppliedCState extends State<AppliedC> {
                     width: 10,
                   ),
                   Text(
-                    application['details'],
+                    company['details'],
                     maxLines: 5,
                     style: TextStyle(
                       fontFamily: 'Nunito Regular',
@@ -118,6 +118,9 @@ class _AppliedCState extends State<AppliedC> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 GestureDetector(
+                  onTap: () {
+                    _showDeleteDialog(company: company);
+                  },
                   child: Row(
                     children: [
                       Icon(
@@ -150,60 +153,104 @@ class _AppliedCState extends State<AppliedC> {
     );
   }
 
+  _showDeleteDialog({Map company}) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Apply for ${company['name']}'),
+            content: Text(
+              'Are you sure you want to Apply?',
+              style: TextStyle(
+                  fontFamily: 'Nunito Regular',
+                  fontSize: 19,
+                  color: Colors.black),
+            ),
+            actions: [
+              TextButton(
+                child: Text(
+                  'Yes',
+                  style: TextStyle(
+                      fontFamily: 'Nunito Regular',
+                      fontSize: 18,
+                      color: Colors.black),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  reference
+                      .child(company['key'])
+                      .remove()
+                      .whenComplete(() => Navigator.pop(context));
+                },
+                child: Text(
+                  'No',
+                  style: TextStyle(
+                      fontFamily: 'Nunito Regular',
+                      fontSize: 18,
+                      color: Colors.black),
+                ),
+              )
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(120),
+        child: ClipPath(
+          clipper: Appbar(),
           child: Container(
-        height: 200,
-        width: 100,
-        color: Colors.yellow,
-      )),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 230, top: 80, bottom: 20),
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 28),
+                    child: Text(
+                      'IPVP',
+                      style: TextStyle(
+                        fontFamily: 'Raleway Regular',
+                        color: Colors.white,
+                        fontSize: 38,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.search,
+                        color: Colors.white,
+                      ),
+                      iconSize: 35,
+                      onPressed: () {},
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            color: Colors.red[600],
+          ),
+        ),
+      ),
+      body: Container(
+        height: double.infinity,
+        child: FirebaseAnimatedList(
+          query: _ref,
+          itemBuilder: (BuildContext context, DataSnapshot snapshot,
+              Animation<double> animation, int index) {
+            Map company = snapshot.value;
+            company['key'] = snapshot.key;
+            return _buildCompItem(company: company);
+          },
+        ),
+      ),
+      backgroundColor: Colors.transparent,
     );
   }
 }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: PreferredSize(
-//         preferredSize: Size.fromHeight(120),
-//         child: ClipPath(
-//           clipper: Appbar(),
-//           child: Container(
-//             child: Padding(
-//               padding: const EdgeInsets.only(left: 230, top: 80, bottom: 20),
-//               child: Row(
-//                 children: <Widget>[
-//                   Padding(
-//                     padding: const EdgeInsets.only(left: 28),
-//                     child: Text('IPVP',
-//                       style: TextStyle(
-//                         fontFamily: 'Raleway Regular',
-//                         color: Colors.white,
-//                         fontSize: 38,
-//                         fontWeight: FontWeight.bold,
-//                       ),
-//                     ),
-//                   ),
-//                   Padding(
-//                     padding: const EdgeInsets.only(left: 10),
-//                     child: IconButton(
-//                       icon: Icon(Icons.search,
-//                         color: Colors.white,
-//                       ),
-//                       iconSize: 35,
-//                       onPressed: () {},
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             color: Colors.red[600],
-//           ),
-//         ),
-//       ),
-//       body: Container(),
-//     );
-//   }
-// }

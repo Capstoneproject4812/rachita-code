@@ -1,6 +1,9 @@
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:ipvp/bloc/navigation_bloc/navigation_bloc.dart';
 
-class ReportStd extends StatelessWidget {
+class ReportStd extends StatelessWidget with NavigationStates {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,12 +58,12 @@ class ReportStd extends StatelessWidget {
                         borderRadius: BorderRadius.circular(36)),
                     color: Colors.orangeAccent[400],
                     onPressed: () async {
-                      // FilePickerResult result =
-                      //     await FilePicker.platform.pickFiles();
-                      // if (result != null) {
-                      //   print(result.files.single.name);
-                      //   File file = File(result.files.single.path);
-                      // }
+                      FilePickerResult result =
+                          await FilePicker.platform.pickFiles();
+                      if (result != null) {
+                        print(result.files.single.name);
+                        File file = File(result.files.single.path);
+                      }
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -78,7 +81,7 @@ class ReportStd extends StatelessWidget {
               ],
             ),
           )
-          // LoginAndRegister(),
+          // LoginAndRegister(), ye remove ji
           // LoginWithFacebook()
         ],
       ),
